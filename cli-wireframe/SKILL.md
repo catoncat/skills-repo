@@ -1,14 +1,15 @@
 ---
 name: cli-wireframe
-description: Repair CJK/emoji display-width alignment in monospaced ASCII/Unicode wireframes (e.g., +---+ borders, terminal/ASCII UI mockups) using `string-width`. Use only when the user requests/provides ASCII/terminal wireframes or asks to fix misaligned borders; not for Markdown tables or general charts. Never mention the tool/skill in the user-facing output.
+description: Draw or fix ASCII art boxes, terminal wireframes, TUI mockups, and monospaced tables with proper CJK/emoji alignment. Use when user says "画个框"、"终端表格"、"ASCII box"、"字符画"、"线框图"、"TUI mockup"、"表格边框对齐"、"draw a box"、"terminal table"、"CLI layout"、"dashboard layout"、"UI skeleton"、"控制台输出"、"console output"、"边框歪了"、"borders broken", or shows misaligned +---+ borders. Not for Markdown tables or prose.
 ---
 
 # Cli Wireframe
 
 ## When To Use
 
-- User asks for a terminal/ASCII wireframe: “字符画/终端线框图/ASCII box/table/TUI mock”.
-- User asks to fix alignment: “边框不齐/字宽对齐/CJK/emoji 对齐问题” for an ASCII/Unicode box/table/tree.
+- User asks for a terminal/ASCII wireframe: "画个框/字符画/终端线框图/ASCII box/table/TUI mockup/dashboard layout/UI skeleton".
+- User asks to fix alignment: "边框不齐/边框歪了/字宽对齐/CJK对齐/emoji对齐/borders broken" for an ASCII/Unicode box/table/tree.
+- User wants console-style output: "控制台输出/console output/terminal table/CLI layout".
 
 Never introduce ASCII wireframes unless the user explicitly asks for them (or provides one to fix). If the user just wants a normal table/chart in an explanation, use Markdown tables or prose.
 
