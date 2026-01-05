@@ -6,21 +6,32 @@ CJK/emoji-safe ASCII/Unicode wireframe rendering with correct terminal display-w
 
 Generates perfectly aligned terminal wireframes (boxes, tables, trees) even with Chinese/Japanese/Korean characters and emojis. Solves the common problem where `.length` miscounts display width, causing misaligned borders.
 
-**Before** (broken):
+### The Problem
+
+When AI generates ASCII boxes with CJK characters using naive `.length`:
+
 ```
+// "Hello".length = 5, "你好".length = 2
+// But in terminal: "Hello" = 5 columns, "你好" = 4 columns (each CJK = 2 wide)
+
 +----------------+
 | Hello          |
-| 你好       |  ← border misaligned
+| 你好           |   ← AI added wrong padding, border breaks in terminal
 +----------------+
 ```
 
-**After** (fixed):
+### The Solution
+
+This skill uses `string-width` to calculate actual display width:
+
 ```
 +----------+
 | Hello    |
-| 你好     |  ← perfectly aligned
+| 你好     |   ← correct padding, perfectly aligned in terminal
 +----------+
 ```
+
+> **Note**: GitHub's code font doesn't render CJK at double-width, so the examples above may look odd here. In a real terminal with a monospace font, the borders align perfectly.
 
 ---
 
