@@ -14,24 +14,26 @@ When AI generates ASCII boxes with CJK characters using naive `.length`:
 // "Hello".length = 5, "你好".length = 2
 // But in terminal: "Hello" = 5 columns, "你好" = 4 columns (each CJK = 2 wide)
 
-+----------------+
-| Hello          |
-| 你好           |   ← AI added wrong padding, border breaks in terminal
-+----------------+
++-------+
+|Hello  |
+|你好   |  ← AI pads with 3 spaces (5-2=3), but CJK needs only 1
++-------+
+         ^ border misaligned in terminal
 ```
 
 ### The Solution
 
 This skill uses `string-width` to calculate actual display width:
 
-```
-+----------+
-| Hello    |
-| 你好     |   ← correct padding, perfectly aligned in terminal
-+----------+
+```text
++-------+
+|Hello  |
+|你好   |
+|World  |
++-------+
 ```
 
-> **Note**: GitHub's code font doesn't render CJK at double-width, so the examples above may look odd here. In a real terminal with a monospace font, the borders align perfectly.
+The borders align perfectly because padding is calculated from display width, not `.length`.
 
 ---
 
