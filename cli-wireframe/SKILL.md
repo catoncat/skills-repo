@@ -55,6 +55,16 @@ cat <<'JSON' | bun scripts/render-wireframe.mjs --markdown
 JSON
 ```
 
+### GitHub Mode
+
+For output intended for GitHub READMEs or web pages (where fonts may not render CJK at double-width), use `--github` to pad with fullwidth spaces (U+3000):
+
+```bash
+bun scripts/render-wireframe.mjs --demo all --markdown --github
+```
+
+This ensures proper alignment in GitHub code blocks.
+
 ## Guardrails (Do Not Skip)
 
 - Never use `.length` for alignment; always use display width (`string-width`).

@@ -105,5 +105,6 @@ Example prompt:
 - Uses `string-width` library for accurate display-width calculation
 - Supports: `box`, `table`, `hstack`, `vstack` layouts
 - Runtime: Bun (Node.js compatible)
+- `--github` flag: Uses fullwidth spaces (U+3000) for GitHub/web rendering
 
 See [SKILL.md](./SKILL.md) for the full AI instruction spec.

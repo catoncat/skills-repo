@@ -4,6 +4,29 @@ import stringWidth from "string-width";
 
 const dw = (text) => stringWidth(text);
 
+// Padding character: regular space (width=1) or fullwidth space U+3000 (width=2) for GitHub
+let SPACE = " ";
+let SPACE_WIDTH = 1;
+
+function setGitHubMode(enabled) {
+	if (enabled) {
+		SPACE = "\u3000"; // Fullwidth space
+		SPACE_WIDTH = 2;
+	} else {
+		SPACE = " ";
+		SPACE_WIDTH = 1;
+	}
+}
+
+function padSpaces(count) {
+	// Generate padding for `count` display-width units
+	if (SPACE_WIDTH === 1) return SPACE.repeat(count);
+	// Fullwidth space is 2 wide, so we need count/2 spaces (round down) + 1 regular space if odd
+	const full = Math.floor(count / 2);
+	const remainder = count % 2;
+	return SPACE.repeat(full) + (remainder ? " " : "");
+}
+
 const segmenter =
 	typeof Intl !== "undefined" && Intl.Segmenter
 		? new Intl.Segmenter(undefined, { granularity: "grapheme" })
@@ -41,7 +64,7 @@ function truncateToWidth(text, maxWidth, ellipsis = "…") {
 function padRightToWidth(text, width) {
 	const w = dw(text);
 	if (w >= width) return text;
-	return text + " ".repeat(width - w);
+	return text + padSpaces(width - w);
 }
 
 function cell(text, width, align = "left") {
@@ -49,13 +72,13 @@ function cell(text, width, align = "left") {
 	const w = dw(fitted);
 	const padding = width - w;
 	if (padding <= 0) return fitted;
-	if (align === "right") return " ".repeat(padding) + fitted;
+	if (align === "right") return padSpaces(padding) + fitted;
 	if (align === "center") {
 		const left = Math.floor(padding / 2);
 		const right = padding - left;
-		return " ".repeat(left) + fitted + " ".repeat(right);
+		return padSpaces(left) + fitted + padSpaces(right);
 	}
-	return fitted + " ".repeat(padding);
+	return fitted + padSpaces(padding);
 }
 
 function cellLines(value) {
@@ -310,7 +333,7 @@ function vstack(blocks, gap = 1) {
 		const block = blocks[i];
 		for (const line of block) out.push(padRightToWidth(line, maxWidth));
 		if (i < blocks.length - 1) {
-			for (let g = 0; g < gap; g += 1) out.push(" ".repeat(maxWidth));
+			for (let g = 0; g < gap; g += 1) out.push(padSpaces(maxWidth));
 		}
 	}
 	return out;
@@ -322,14 +345,14 @@ function hstack(blocks, gap = 2) {
 
 	const paddedBlocks = blocks.map((block, idx) => {
 		const width = widths[idx];
-		const fill = " ".repeat(width);
+		const fill = padSpaces(width);
 		const padded = block.map((line) => padRightToWidth(line, width));
 		while (padded.length < height) padded.push(fill);
 		return padded;
 	});
 
 	const out = [];
-	const sep = " ".repeat(gap);
+	const sep = padSpaces(gap);
 	for (let row = 0; row < height; row += 1) {
 		out.push(paddedBlocks.map((b) => b[row]).join(sep));
 	}
@@ -479,7 +502,7 @@ function demoSpec(name) {
 }
 
 function parseArgs(argv) {
-	const args = { demo: null, specPath: null, markdown: false };
+	const args = { demo: null, specPath: null, markdown: false, github: false };
 	for (let i = 2; i < argv.length; i += 1) {
 		const a = argv[i];
 		if (a === "--demo") {
@@ -496,6 +519,10 @@ function parseArgs(argv) {
 			args.markdown = true;
 			continue;
 		}
+		if (a === "--github") {
+			args.github = true;
+			continue;
+		}
 		if (a === "--help" || a === "-h") {
 			args.help = true;
 			continue;
@@ -508,8 +535,12 @@ function parseArgs(argv) {
 function usage() {
 	return [
 		"Usage:",
-		"  bun scripts/render-wireframe.mjs --demo all [--markdown]",
-		"  bun scripts/render-wireframe.mjs --spec path/to/spec.json [--markdown]",
+		"  bun scripts/render-wireframe.mjs --demo all [--markdown] [--github]",
+		"  bun scripts/render-wireframe.mjs --spec path/to/spec.json [--markdown] [--github]",
+		"",
+		"Options:",
+		"  --markdown  Wrap output in ```text``` code fence",
+		"  --github    Use fullwidth spaces for GitHub/web rendering",
 		"",
 		"Demos: table | dashboard | tree | all",
 		"Spec types: box | table | hstack | vstack",
@@ -527,6 +558,9 @@ if (args.help) {
 	console.log(usage());
 	process.exit(0);
 }
+
+// Enable GitHub mode (fullwidth space padding) if requested
+setGitHubMode(args.github);
 
 let spec;
 if (args.demo) {
