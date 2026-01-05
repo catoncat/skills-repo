@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Node/Bun
+**/node_modules/
+**/.bun/
+**/.cache/
+**/dist/
+**/*.log
+
+# Env / secrets
+**/.env
+**/.env.*
+
+# Editors
+.vscode/
+.idea/

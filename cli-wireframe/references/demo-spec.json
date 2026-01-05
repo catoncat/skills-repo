@@ -1,0 +1,106 @@
+{
+  "type": "vstack",
+  "gap": 1,
+  "children": [
+    {
+      "type": "table",
+      "width": 88,
+      "title": "工单列表 / Work Orders (Demo)",
+      "columns": [
+        { "key": "id", "header": "工单号 ID", "width": 12 },
+        { "key": "name", "header": "名称 Name", "width": 28 },
+        { "key": "status", "header": "状态 Status", "width": 20 },
+        { "key": "owner", "header": "负责人 Owner", "width": 14 },
+        { "key": "updated", "header": "更新时间", "width": 8, "align": "right" }
+      ],
+      "rows": [
+        {
+          "id": "WO-1024",
+          "name": "工单加载 / Load Job",
+          "status": "进行中 In Progress",
+          "owner": "张三 / Alice",
+          "updated": "09:10"
+        },
+        {
+          "id": "WO-1023",
+          "name": "物料校验 Material Validation (LOT-8891)",
+          "status": "⚠ 异常 Failed",
+          "owner": "李四 / Bob",
+          "updated": "08:40"
+        },
+        {
+          "id": "WO-1022",
+          "name": "追溯 Traceability 生成 (Batch)",
+          "status": "✅ 完成 Done",
+          "owner": "王五 / Carol",
+          "updated": "08:05"
+        }
+      ]
+    },
+    {
+      "type": "hstack",
+      "gap": 2,
+      "children": [
+        {
+          "type": "box",
+          "width": 30,
+          "title": "导航 / Nav",
+          "lines": [
+            "• 仪表盘 Dashboard",
+            "• 工单 Work Orders",
+            "• 数据采集 Data Collect",
+            "• 追溯 Trace",
+            "• 设置 Settings"
+          ]
+        },
+        {
+          "type": "box",
+          "width": 56,
+          "title": "详情 / Details",
+          "lines": [
+            "工单：WO-1024  | 产品：P-1001",
+            "状态：进行中 In Progress",
+            "进度：120/500  [███████░░░░░░]",
+            "下一步：OP-20 点检/测量  (Station A)",
+            "Actions: [开始 Start] [暂停 Pause] [完工 Finish]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "hstack",
+      "gap": 2,
+      "children": [
+        {
+          "type": "box",
+          "width": 44,
+          "title": "流程树 / Tree",
+          "lines": [
+            "工艺路线 / Route",
+            "├─ OP-10 上料 Load  (✅ Done)",
+            "├─ OP-20 点检 Inspect (⏳ Running)",
+            "│  ├─ 采集 Data: 温度 Temp",
+            "│  └─ 采集 Data: 扭矩 Torque",
+            "└─ OP-30 包装 Pack  (• Pending)"
+          ]
+        },
+        {
+          "type": "table",
+          "width": 42,
+          "title": "采集项 / Data Points",
+          "columns": [
+            { "key": "k", "header": "项目 Item", "width": 18 },
+            { "key": "v", "header": "值 Value", "width": 12 },
+            { "key": "s", "header": "状态", "width": 8 }
+          ],
+          "rows": [
+            { "k": "温度 Temp(℃)", "v": "36.5", "s": "OK" },
+            { "k": "扭矩 Torque(N·m)", "v": "11.2", "s": "OK" },
+            { "k": "外观 Visual", "v": "N/A", "s": "待填" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
