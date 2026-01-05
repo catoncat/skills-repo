@@ -1,80 +1,61 @@
-# skills-repo
+# Skills Repo
 
-This repo contains installable skills for **Codex CLI** and **Claude Code**.
+A collection of AI coding agent skills for **Claude Code** and **Codex CLI**.
 
-## Skills
+## Available Skills
 
-- `cli-wireframe/` — CJK/emoji-safe ASCII/Unicode wireframe rendering (boxes/tables/trees) with correct terminal display-width alignment.
+| Skill | Description |
+|-------|-------------|
+| [cli-wireframe](./cli-wireframe/) | CJK/emoji-safe ASCII wireframe rendering with correct terminal display-width alignment |
+
+> More skills coming soon...
 
 ---
 
-## Install for Claude Code
+## How to Install
 
-### Recommended: Paste into Claude Code
+Each skill has its own README with copy-paste installation instructions. Click on a skill above to see details.
 
-Copy/paste this into Claude Code:
+### Quick Install Pattern
+
+**For Claude Code** — paste this template (replace `<skill-name>`):
 
 ```text
 请帮我安装一个 Claude Code skill：
 
-1. 克隆仓库：git clone https://github.com/catoncat/skills-repo.git /tmp/skills-repo
-2. 创建 skills 目录：mkdir -p ~/.claude/skills
-3. 复制 skill：cp -r /tmp/skills-repo/cli-wireframe ~/.claude/skills/
-4. 安装依赖：cd ~/.claude/skills/cli-wireframe && bun install
-5. 清理临时文件：rm -rf /tmp/skills-repo
+1. git clone https://github.com/catoncat/skills-repo.git /tmp/skills-repo
+2. mkdir -p ~/.claude/skills
+3. cp -r /tmp/skills-repo/<skill-name> ~/.claude/skills/
+4. cd ~/.claude/skills/<skill-name> && bun install
+5. rm -rf /tmp/skills-repo
 
-完成后确认 ~/.claude/skills/cli-wireframe/SKILL.md 存在，并告诉我重启 Claude Code 以加载新 skill。
+完成后告诉我重启 Claude Code。
 ```
 
-### Manual Install for Claude Code
-
-```bash
-git clone https://github.com/catoncat/skills-repo.git
-mkdir -p ~/.claude/skills
-rsync -a --exclude node_modules skills-repo/cli-wireframe/ ~/.claude/skills/cli-wireframe/
-cd ~/.claude/skills/cli-wireframe && bun install
-```
-
-Then restart Claude Code to pick up the new skill.
-
----
-
-## Install for Codex CLI
-
-### Install (Recommended: via Codex)
-
-Codex ships a built-in system skill **skill-installer** that can install skills directly from GitHub.
-
-Copy/paste this into Codex:
+**For Codex CLI** — paste this template (replace `<skill-name>`):
 
 ```text
 Install the Codex skill from:
 - repo: catoncat/skills-repo
-- path: cli-wireframe
-into my $CODEX_HOME/skills folder (default ~/.codex/skills).
+- path: <skill-name>
+into my $CODEX_HOME/skills folder.
 
-Use the built-in skill-installer to do it, then tell me to restart Codex.
+Use the built-in skill-installer, then tell me to restart Codex.
 ```
 
-### Install (Terminal / Script) for Codex
+---
 
-If you prefer a direct command, run:
+## Contributing
 
-```bash
-python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
-  --repo catoncat/skills-repo \
-  --path cli-wireframe
+Want to add a new skill? Each skill should have:
+
+```
+your-skill/
+├── README.md      # Installation instructions + usage
+├── SKILL.md       # AI instructions (YAML frontmatter + Markdown)
+├── AGENTS.md      # Development guidelines (optional)
+├── scripts/       # Executable scripts (if needed)
+└── references/    # Example files (if needed)
 ```
 
-Then restart Codex to pick up the new skill.
-
-### Manual Install for Codex
-
-```bash
-git clone https://github.com/catoncat/skills-repo.git
-mkdir -p ~/.codex/skills
-rsync -a --exclude node_modules skills-repo/cli-wireframe/ ~/.codex/skills/cli-wireframe/
-```
-
-Then restart Codex to pick up the new skill.
-
+See [cli-wireframe](./cli-wireframe/) as a reference implementation.
