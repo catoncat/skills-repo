@@ -58,13 +58,20 @@ function cell(text, width, align = "left") {
 	return fitted + " ".repeat(padding);
 }
 
+function cellLines(value) {
+	if (Array.isArray(value)) return value.map((v) => String(v ?? ""));
+	return [String(value ?? "")];
+}
+
 function inferColumnContentWidth(column, rows) {
 	const header = String(column?.header ?? column?.key ?? "");
 	let max = dw(header);
 	for (const row of rows ?? []) {
 		const key = column?.key;
 		const value = key ? row?.[key] : "";
-		max = Math.max(max, dw(String(value ?? "")));
+		for (const line of cellLines(value)) {
+			max = Math.max(max, dw(line));
+		}
 	}
 	return max;
 }
@@ -269,18 +276,29 @@ function renderTable({ width, title, columns, rows }) {
 		.map((c, idx) => cell(c.header ?? c.key ?? "", colWidths[idx], c.align ?? "left"))
 		.join("|");
 
-	const dataRows = (rows ?? []).map((row) =>
-		columns
-			.map((c, idx) => cell(row?.[c.key] ?? "", colWidths[idx], c.align ?? "left"))
-			.join("|"),
-	);
+	// Build data rows, supporting multi-line cells (cell value can be an array)
+	const dataRowGroups = (rows ?? []).map((row) => {
+		const cellArrays = columns.map((c) => cellLines(row?.[c.key]));
+		const maxLines = Math.max(1, ...cellArrays.map((arr) => arr.length));
+		const physicalRows = [];
+		for (let lineIdx = 0; lineIdx < maxLines; lineIdx += 1) {
+			const rowStr = columns
+				.map((c, colIdx) => {
+					const text = cellArrays[colIdx][lineIdx] ?? "";
+					return cell(text, colWidths[colIdx], c.align ?? "left");
+				})
+				.join("|");
+			physicalRows.push(`|${padRightToWidth(rowStr, inner)}|`);
+		}
+		return physicalRows;
+	});
 
 	return [
 		sep,
 		...(title ? [`|${cell(title, inner, "center")}|`, sep] : []),
 		`|${padRightToWidth(headerRow, inner)}|`,
 		sep,
-		...dataRows.map((r) => `|${padRightToWidth(r, inner)}|`),
+		...dataRowGroups.flatMap((group, idx) => (idx < dataRowGroups.length - 1 ? [...group, sep] : group)),
 		sep,
 	];
 }

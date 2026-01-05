@@ -16,10 +16,10 @@ Generates perfectly aligned terminal wireframes (boxes, tables, trees) even with
 
 **After** (fixed):
 ```
-+----------------+
-| Hello          |
-| 你好           |  ← perfectly aligned
-+----------------+
++----------+
+| Hello    |
+| 你好     |  ← perfectly aligned
++----------+
 ```
 
 ---
